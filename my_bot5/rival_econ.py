@@ -45,9 +45,7 @@ SIEGE = True
 AMBUSH = True
 RALLY_SPLIT = True
 SIEGE_MULT = 2
-SIEGE_ADD = 20
-
-
+SIEGE_ADD = 13
 def log(*a):
     print(*a, file=sys.stderr)
 

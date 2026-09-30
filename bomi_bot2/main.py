@@ -1,5 +1,4 @@
-"""테스트용 상대 rival_raid (제출용 아님): 상대 진영 공격형 변형.
-my_bot3 — 깃발 대항전 전략 봇 (my_bot2 + 경제 중심 개선).
+"""my_bot5 — 깃발 대항전 전략 봇 (my_bot4 + 상대 공학관 공략).
 
 핵심 아이디어
  1. 자원은 거의 전부 쓴다 (점령 비용은 이번 턴 수입으로 낼 수 있으므로 예약을 최소화).
@@ -21,7 +20,25 @@ my_bot3 개선점 (공식 리플레이 15경기 분석 기반)
  14. 종반: 남은 턴 안에 점령이 끝날 수 없는 목표는 버리고, 마지막 턴에는 인접 건물로 무조건 진입.
  15. 역 순간이동(TELE): 적의 순간이동 위협을 위협 지도에 반영하고, 내 역 2개 이상이면 전투병을 전선 쪽 역으로 이동.
  17. 학생회관·공학관에 평소에도 최소 1명 수비대 (가까운 적 깃발병 기습 방지).
+ 18. 2턴 안에 올 수 있는 적 전투병까지 계산해 깃발병 경로를 고르고, 위험이 닿기 전에 전투병이 미리 호위.
+ 19. 경제 가중치 12, 중반 깃발병 최대 4명, 봉쇄 기준 상향, 집결 분산 완화.
+ 23. (my_bot4) 상대 수 읽기: 상대 입장에서 우리 판단 로직을 돌려 적 깃발병·전투병의 다음 위치를 예측하고,
+     위협 계산을 '최악 가정의 절반과 예측값 중 큰 값'으로 보정해 깃발병을 더 과감하게 운용, 예측 위치의 적 깃발병 사냥.
+     응답 시간이 120ms를 넘으면 다음 턴은 예측을 생략(시간 초과 방지).
+ 24. (my_bot4) 호송대: 깃발병마다 전투병 5명이 함께 이동해, 전투병을 얇게 펼치는 상대의 그물 방어를 돌파.
+ 25. (my_bot5) 상대 공학관을 집중 공략(목표 가치 2배, 집결 2배).
  16. 파라미터 탐색(실제 맵 + 무작위 맵) 결과: 초반 깃발병 4명, 경제 가중치 9 등.
+공식 리플레이 26경기 재분석(패배 경기 대부분이 게임 종료 시 학생회관+공학관 4개 전부를 상대가
+독식) 기반 my_bot5 보완:
+ 26. 순환 함정 제거: STRIKE 발동 조건을 "내가 이미 1.1배 앞설 때"에서 "상대 공학관 수 > 내 공학관
+     수이고 내 병력이 상대의 0.7배 이상일 때"로 바꿔, 밀리기 시작하기 전에 조기 개입한다.
+ 27. MIN_GAR 1→3, ENG_PR 0→2.0, RETAKE_MULT 1.0→1.6 재활성화: 학생회관·공학관 상시 수비대와
+     우리 진영 공학관 탈환 우선순위를 실측된 상대 공세 규모(경기당 26~35회)에 맞게 올린다.
+ 28. 경제 핵심 건물 수비에 2턴 내 위협(ereach2)을 조기 반영해, 적이 반경 2칸에 들어온 뒤에야
+     반응하던 지연을 줄인다.
+ 29. 집중 방어(outnumbered = 전체 전투병이 상대의 0.75배 미만): 호송 규모 축소, 사냥 우선순위
+     하향, 예비 병력의 분산 집결을 끄고 본진 경제 건물로 모은다 — 힘을 여러 곳에 얇게 펼쳐
+     각개격파당하던 패턴(리플레이에서 확인) 보완.
 제출 규정 준수: 모든 값은 소스에 상수로 포함, 실행 중 파일 읽기·네트워크 접근 없음.
 표준 라이브러리만 사용한다.
 """
@@ -56,23 +73,57 @@ SIEGE = True
 AMBUSH = True
 RALLY_SPLIT = True
 SIEGE_MULT = 1.5
-SIEGE_ADD = 16
-ECON_K = 5.0
-HOME_BIAS = -0.2775
-HOME_TURNS = 69
+SIEGE_ADD = 30
+ECON_K = 12.0
+HOME_BIAS = 0.08
+HOME_TURNS = 60
 GARRISON = True
 ENDGAME = True
 INTERCEPT = False
-MIN_GAR = 0
+MIN_GAR = 2
+MIRROR_Y = True
+LOCAL3 = False
+LOCAL3_MIN = 0.15
+POLICE = False
+POLICE_PR = 8.0
+GAR_RADIUS = 30
+PREDICT = True
+PRED_PR = 9.5
+PRED_ALPHA = 0.5
+CONVOY_N = 5
+ENG_R = 2
+ENG_PR = 2.0
+RETAKE_MULT = 1.6
+LEAD_M = 0
+LEAD_DEEP = 0.5
+ENG_STRIKE = True
+STRIKE_MULT = 0.7
+STRIKE_TGT = 2.0
+STRIKE_RALLY = 2.0
+CONCENTRATE_TH = 0.7
+GARRISON_BOOST = 2.0
+FORTRESS_MIN = 1
+FORTRESS_RETAKE_MULT = 1.8
+SPOIL_ON = True
+FORTRESS_ON = False
+CONVOY_PR = 6.5
+CONVOY_R = 6
+PRED_TIME_LIMIT = 0.12
+CAUT = True
+MID_F_HI = 4
+MID_F_LO = 2
+RALLY_D = 5
 INTERCEPT_R = 6
 INTERCEPT_N = 2
 TELE_ON = True
 TELE_GAIN = 4
-EARLY_F = 9
-EARLY_T = 16
-EO_MULT = 0.6
-STICK = 1.3068
+EARLY_F = 4
+EARLY_T = 8
+EO_MULT = 0.3
+STICK = 1.5
 GARRISON_R = 2
+
+
 def log(*a):
     print(*a, file=sys.stderr)
 
@@ -124,7 +175,10 @@ class Brain:
         self.bpos = {(b["x"], b["y"]): b for b in init.buildings}
         self.known = {}          # 좌표 -> 실제 점수 (대칭 추론 포함)
         self.depot_got = set()   # 내가 보너스를 받은 보급소 좌표
+        self.opp_brain = None
         self.fmem = {}           # 지난 턴 깃발병 도착 칸 -> [목표] (목표 유지용)
+        # 요새: 본진에서 제일 가까운 건물 하나. 게임 내내 항상 두텁게 지켜 즉시패(점수 0)를 막는다.
+        self.fortress = min(self.bpos, key=lambda p: self.d(self.base, p))
 
     def d(self, a, b):
         return self.dist[a][idx(*b)] if a in self.dist else INF
@@ -181,15 +235,146 @@ def value(brain, b, turn):
     return v
 
 
-def decide(view, init):
-    brain = _BRAINS.get(id(init))
-    if brain is None:
-        brain = _BRAINS[id(init)] = Brain(init)
+_MIRROR = {}
+_FLIP = {"U": "D", "D": "U", "L": "R", "R": "L"}
+
+
+def _m(x, y):
+    return N - 1 - x, N - 1 - y
+
+
+def _mirror_init(init):
+    """연세(Y) 진영일 때 판을 180도 돌려, 고려(K) 진영과 똑같은 관점으로 판단하게 한다."""
+    from campus_bot import Init
+    terrain = [[init.terrain[N - 1 - y][N - 1 - x] for x in range(N)] for y in range(N)]
+    buildings = [dict(b, x=_m(b["x"], b["y"])[0], y=_m(b["x"], b["y"])[1]) for b in init.buildings]
+    bases = {t: _m(*p) for t, p in init.bases.items()}
+    return Init(init.width, init.height, init.team, terrain, buildings, bases)
+
+
+def _mirror_view(view, minit):
+    from campus_bot import View
+    units = [dict(u, x=_m(u["x"], u["y"])[0], y=_m(u["x"], u["y"])[1]) for u in view.units]
+    buildings = [dict(b, x=_m(b["x"], b["y"])[0], y=_m(b["x"], b["y"])[1]) for b in view.buildings]
+    return View(view.turn, minit, view.my_resource, view.opp_resource, units, buildings)
+
+
+def _unmirror_cmd(c):
+    t = c.split()
     try:
+        if t[0] == "SPAWN" and len(t) == 5:
+            x, y = _m(int(t[3]), int(t[4]))
+            return " ".join(t[:3] + [str(x), str(y)])
+        if t[0] == "MOVE":
+            x, y = _m(int(t[1]), int(t[2]))
+            return " ".join([t[0], str(x), str(y), t[3], t[4], _FLIP[t[5]]])
+        if t[0] == "MOVE2":
+            x, y = _m(int(t[1]), int(t[2]))
+            return " ".join([t[0], str(x), str(y), t[3], t[4], _FLIP[t[5]], _FLIP[t[6]]])
+        if t[0] == "TELE":
+            x, y = _m(int(t[1]), int(t[2]))
+            tx, ty = _m(int(t[5]), int(t[6]))
+            return " ".join([t[0], str(x), str(y), t[3], t[4], str(tx), str(ty)])
+        if t[0] == "PRIORITY":
+            v = list(map(int, t[1:]))
+            out = []
+            for i in range(0, len(v) - 1, 2):
+                out += list(_m(v[i], v[i + 1]))
+            return " ".join(["PRIORITY"] + [str(a) for a in out])
+    except (ValueError, IndexError, KeyError):
+        return c
+    return c
+
+
+def decide(view, init):
+    import time
+    t0 = time.perf_counter()
+    try:
+        return _decide_entry(view, init)
+    finally:
+        dt = time.perf_counter() - t0
+        for b in _BRAINS.values():
+            # 응답 시간이 길어지면(느린 채점 서버 대비) 다음 턴은 상대 예측을 끈다
+            b.slow = dt > PRED_TIME_LIMIT and view.turn > 1
+
+
+def _decide_entry(view, init):
+    try:
+        if MIRROR_Y and init.team == "Y":
+            minit = _MIRROR.get(id(init))
+            if minit is None:
+                minit = _MIRROR[id(init)] = _mirror_init(init)
+            brain = _BRAINS.get(id(minit))
+            if brain is None:
+                brain = _BRAINS[id(minit)] = Brain(minit)
+            return [_unmirror_cmd(c) for c in _decide(brain, _mirror_view(view, minit))]
+        brain = _BRAINS.get(id(init))
+        if brain is None:
+            brain = _BRAINS[id(init)] = Brain(init)
         return _decide(brain, view)
     except Exception as e:  # 어떤 예외도 몰수패로 이어지지 않도록
         log("ERR", repr(e))
         return []
+
+
+_PREDICTING = [False]
+
+
+def predict_enemy(brain, view):
+    """상대도 우리와 비슷하게 생각한다고 가정하고, 상대 관점에서 우리 로직을 돌려 다음 이동을 예측한다."""
+    from campus_bot import Init, View
+    if brain.opp_brain is None:
+        oi = brain.init
+        oinit = Init(oi.width, oi.height, brain.op, oi.terrain, oi.buildings, oi.bases)
+        import copy
+        ob = copy.copy(brain)
+        ob.init = oinit
+        ob.me, ob.op = brain.op, brain.me
+        ob.base, ob.obase = brain.obase, brain.base
+        ob.known = dict(brain.known)
+        ob.depot_got = set()
+        ob.fmem = {}
+        ob.opp_brain = None
+        ob.slow = False
+        brain.opp_brain = ob
+    ob = brain.opp_brain
+    oview = View(view.turn, ob.init, view.opp_resource, view.my_resource, view.units, view.buildings)
+    _PREDICTING[0] = True
+    try:
+        out = _decide(ob, oview)
+    except Exception:
+        out = []
+    finally:
+        _PREDICTING[0] = False
+    units = {}
+    for u in view.units:
+        if u["team"] == brain.op:
+            k = (u["kind"], (u["x"], u["y"]))
+            units[k] = units.get(k, 0) + u["count"]
+    ob_base = brain.obase
+    for c in out:
+        t = c.split()
+        if t[0] == "SPAWN":
+            pos = (int(t[3]), int(t[4])) if len(t) == 5 else ob_base
+            units[(t[1], pos)] = units.get((t[1], pos), 0) + int(t[2])
+    moved = {}
+    for c in out:
+        t = c.split()
+        if t[0] == "MOVE":
+            src = (int(t[1]), int(t[2])); k = t[3]; n = int(t[4])
+            dx, dy = DIRS[t[5]]
+            dst = (src[0] + dx, src[1] + dy)
+            have = units.get((k, src), 0)
+            m = min(n, have)
+            if m <= 0:
+                continue
+            units[(k, src)] = have - m
+            moved[(k, dst)] = moved.get((k, dst), 0) + m
+    for k, v in moved.items():
+        units[k] = units.get(k, 0) + v
+    pf = {p: c for (k, p), c in units.items() if k == "F" and c > 0}
+    pw = {p: c for (k, p), c in units.items() if k == "W" and c > 0}
+    return pf, pw
 
 
 def _decide(brain, view):
@@ -252,6 +437,22 @@ def _decide(brain, view):
             f += e_capF
         ereach[c] = s
         eflag1[c] = f
+    # 상대 행동 예측으로 위협 보정(최악 가정의 ALPHA 배 이상, 예측된 도착 수 이상)
+    pf_pred, pw_pred = ({}, {})
+    if PREDICT and not _PREDICTING[0] and not getattr(brain, "slow", False):
+        pf_pred, pw_pred = predict_enemy(brain, view)
+        if PRED_ALPHA < 1.0:
+            for c in list(ereach.keys()):
+                ereach[c] = max(pw_pred.get(c, 0), int(ereach[c] * PRED_ALPHA + 0.999))
+    # 2턴 내 위협(깃발병 경로 선택·사전 호위용)
+    ereach2 = {}
+    if CAUT:
+        ew_items = list(en["W"].items())
+        for c in brain.nbrs:
+            s2 = sum(cnt for q, cnt in ew_items if brain.d(q, c) <= 2)
+            if any(brain.d(sp, c) <= 2 for sp in e_spawn_pts):
+                s2 += e_capW
+            ereach2[c] = s2
     # 적 순간이동(TELE) 위협: 적 역이 2개 이상이면 다른 역의 병력 최대 5명이 역으로 올 수 있다
     e_st = [(b["x"], b["y"]) for b in eowned if b["type"] == "STATION"]
     if len(e_st) >= 2:
@@ -263,9 +464,18 @@ def _decide(brain, view):
 
     # ------------------------------------------------ 생산 계획
     open_targets = [b for b in view.buildings if b["owner"] != me]
+    my_sc = sum(est_score(brain, b) for b in owned)
+    en_sc = sum(est_score(brain, b) for b in eowned)
+    leading = LEAD_M > 0 and turn > 20 and my_sc >= en_sc + LEAD_M
+    n_w0 = sum(my["W"].values()); n_ew0 = sum(en["W"].values())
+    # 상대가 이미 앞서야만(1.1배) 발동하던 예전 조건은, 정작 밀리기 시작하면 영영 못 켜지는
+    # 순환 함정이었다. "상대 공학관 수가 나보다 많으면" 자체를 트리거로 바꿔 조기에 개입한다.
+    strike = ENG_STRIKE and turn > 10 and e_engs > my_engs and n_w0 >= STRIKE_MULT * n_ew0
     n_f = sum(my["F"].values())
     n_w = sum(my["W"].values())
     n_ew = sum(en["W"].values())
+    # 전체 전투병 수에서 밀리는 중이면(경제 건물 소유 격차의 전조), 확산 대신 집중 방어로 전환
+    outnumbered = n_ew > 0 and n_w < CONCENTRATE_TH * n_ew
 
     # 이번 턴 점령 가능성이 있는 건물 비용 (수입으로 못 메우는 만큼만 예약)
     need_cap = 0
@@ -292,7 +502,7 @@ def _decide(brain, view):
     elif turn <= EARLY_T:
         want_f = min(len(open_targets), EARLY_F)
     else:
-        want_f = min(len(open_targets), 3 if n_w >= n_ew else 2)
+        want_f = min(len(open_targets), MID_F_HI if n_w >= 0.75 * n_ew else MID_F_LO)
         if n_w >= n_ew + 6:
             want_f = min(len(open_targets), 5)
 
@@ -375,6 +585,14 @@ def _decide(brain, view):
             # 남은 턴 안에 점령(또는 중립화)이 끝날 수 없는 목표는 무의미
             if dd + (1 if b["owner"] == op else 0) > tl + 1 and not (b["owner"] == op and dd <= tl):
                 return -1
+        if b["type"] == "ENG" and brain.d(brain.base, tp) < brain.d(brain.obase, tp) and b["owner"] != me:
+            v *= RETAKE_MULT  # 우리 진영 공학관 탈환 최우선
+        if FORTRESS_ON and tp == brain.fortress and b["owner"] == op:
+            v *= FORTRESS_RETAKE_MULT  # 요새를 상대에게 뺏겼으면 최우선으로 되찾는다(중립 최초 점령엔 미적용)
+        if strike and b["type"] == "ENG" and b["owner"] == op:
+            v *= STRIKE_TGT
+        if leading and brain.d(brain.obase, tp) < brain.d(brain.base, tp):
+            v *= LEAD_DEEP
         if b["owner"] == op:
             v *= EO_MULT  # 2턴 필요
         # 적 전투병이 버티는 건물은 불리
@@ -385,6 +603,14 @@ def _decide(brain, view):
         # 적 깃발병이 이미 있고 전투병 지원이 없다면 경합만 된다
         if en["F"].get(tp, 0) and mw_near == 0:
             v *= 0.5
+        # 목표 주변 3칸의 전투병 균형: 적이 우세한 곳(특히 적 본진 옆)은 현실성이 낮다
+        if LOCAL3:
+            ew3 = sum(c for q, c in en["W"].items() if brain.d(q, tp) <= 3)
+            if any(brain.d(sp, tp) <= 3 for sp in e_spawn_pts):
+                ew3 += e_capW
+            mw3 = sum(c for q, c in my["W"].items() if brain.d(q, tp) <= 3)
+            if ew3 > mw3:
+                v *= max(LOCAL3_MIN, (mw3 + 1.0) / (ew3 + 1.0))
         # 적 본진 쪽으로 너무 깊이 들어가는 건 위험
         if brain.d(brain.obase, tp) < brain.d(brain.base, tp) and n_w <= n_ew:
             v *= 0.7
@@ -434,7 +660,7 @@ def _decide(brain, view):
         steps = [n for _, n in brain.nbrs[fp] if brain.d(n, tp) == dcur - 1]
         safe_steps = [n for n in steps if ereach.get(n, 0) == 0 or my_cover(n) > ereach[n]]
         if safe_steps:
-            dest = min(safe_steps, key=lambda n: (danger(n), n))
+            dest = min(safe_steps, key=lambda n: (danger(n), ereach2.get(n, 0), n))
         elif ereach.get(fp, 0) == 0 or my_cover(fp) > ereach[fp]:
             dest = fp  # 제자리 대기(호위를 기다림)
         else:
@@ -488,6 +714,19 @@ def _decide(brain, view):
             b = bmap.get(c)
             pr = 10 + (value(brain, b, turn) if b else 0) + cnt
             demands.append((pr, "escort", c, t + 1))
+    # D1.2 호송: 깃발병마다 전투병 몇 명이 항상 함께 이동(얇게 퍼진 적 전투병 그물을 뚫기 위함)
+    conv_n = CONVOY_N if not outnumbered else max(1, CONVOY_N // 2)
+    if conv_n > 0 and turn > 6:
+        for c, cnt in f_dest.items():
+            b = bmap.get(c)
+            if b is not None and b["owner"] == me:
+                continue
+            demands.append((CONVOY_PR + cnt, "convoy", c, conv_n * cnt))
+    # D1.5 사전 호위: 다음 다음 턴 위협이 있는 깃발병 도착 칸
+    if CAUT:
+        for c, cnt in f_dest.items():
+            if ereach.get(c, 0) == 0 and ereach2.get(c, 0) > 0:
+                demands.append((5 + cnt, "escort2", c, min(ereach2[c] + 1, 15)))
     # D2 방어: 적 깃발병이 1~2턴 안에 올 수 있는 내 건물
     for b in owned:
         p = (b["x"], b["y"])
@@ -500,22 +739,51 @@ def _decide(brain, view):
     # D2.5 상시 수비대: 경제 핵심 건물(학생회관·공학관·병원)
     if GARRISON:
         for b in owned:
-            if b["type"] not in ("HALL", "ENG", "HOSPITAL"):
+            if b["type"] not in ("HALL", "ENG", "HOSPITAL") and not leading:
                 continue
             p = (b["x"], b["y"])
+            gr = ENG_R if b["type"] == "ENG" else GARRISON_R
             thr = 0
             for q, c in en["W"].items():
-                if brain.d(q, p) <= GARRISON_R:
+                if brain.d(q, p) <= gr:
                     thr += c
-            if any(brain.d(sp, p) <= GARRISON_R for sp in e_spawn_pts):
+            if any(brain.d(sp, p) <= gr for sp in e_spawn_pts):
                 thr += e_capW
-            ef = any(brain.d(q, p) <= GARRISON_R + 2 for q in en["F"])
-            if thr == 0 and not ef:
+            ef = any(brain.d(q, p) <= gr + 2 for q in en["F"])
+            # 2턴 내 도달 가능한 위협(ereach2)을 경제 핵심 건물엔 조기 반영해, 적이 반경 2칸에
+            # 들어오기 전에 미리 증원을 부른다(반응이 항상 한 박자 늦던 문제 보완).
+            early_thr = ereach2.get(p, 0) if b["type"] in ("HALL", "ENG") else 0
+            if thr == 0 and early_thr == 0 and not ef:
                 if MIN_GAR and b["type"] in ("HALL", "ENG") and turn > 6:
                     demands.append((3 + value(brain, b, turn), "garrison", p, MIN_GAR))
                 continue
-            need = min(thr + 1, 25)
-            demands.append((6 + value(brain, b, turn), "garrison", p, need))
+            need = min(max(thr, early_thr) + 1, 25)
+            boost = GARRISON_BOOST if outnumbered else 0.0
+            demands.append((6 + value(brain, b, turn) + (ENG_PR if b["type"] == "ENG" else 0) + boost,
+                             "garrison", p, need))
+
+    # D2.6 요새: 본진에서 제일 가까운 건물 하나는 위협 여부와 무관하게 항상 최소 인원을 지킨다.
+    # 즉시패(내 점수 0)를 막기 위한 최후 보루 — 패배 15경기 중 12경기가 즉시패였다.
+    fp = brain.fortress
+    fb = bmap.get(fp)
+    if FORTRESS_ON and fb is not None and fb["owner"] == me:
+        thr_f = sum(c for q, c in en["W"].items() if brain.d(q, fp) <= GARRISON_R + 1)
+        if any(brain.d(sp, fp) <= GARRISON_R + 1 for sp in e_spawn_pts):
+            thr_f += e_capW
+        # 실제 위협이 보일 때만 기존 수비대보다 살짝 강하게 반응한다(상시 인원 예약은 하지 않음 —
+        # 상시 예약판은 시뮬레이션에서 오히려 성적이 떨어져서 뺐다).
+        if thr_f > 0:
+            demands.append((7 + value(brain, fb, turn), "garrison", fp, thr_f + 1))
+
+    # D2.9 예측 사냥: 상대 관점으로 예측한 적 깃발병의 다음 위치
+    if pf_pred or pw_pred:
+        pf, pw = pf_pred, pw_pred
+        for c, cnt in pf.items():
+            if c not in brain.nbrs:
+                continue
+            b = bmap.get(c)
+            pr = PRED_PR + cnt + (value(brain, b, turn) if b is not None else 0)
+            demands.append((pr, "phunt", c, pw.get(c, 0) + 1))
 
     # D3 사냥: 적 깃발병
     for q, cnt in en["F"].items():
@@ -524,6 +792,8 @@ def _decide(brain, view):
             pr = 9 + value(brain, b, turn) + cnt
         else:
             pr = 5 + cnt
+        if outnumbered:
+            pr *= 0.6  # 열세일 땐 원정 사냥보다 본진 방어에 병력을 남긴다
         demands.append((pr, "hunt", q, ereach.get(q, 0) + 1))
         # 건물 밖 깃발병은 다음 칸으로 이동할 가능성이 높으므로 예상 위치도 노린다
         if b is None:
@@ -560,14 +830,32 @@ def _decide(brain, view):
             steps = [n for _, n in brain.nbrs[p] if brain.d(n, cell) == dcur - 1]
             commit(i, min(steps, key=lambda n: (ereach.get(n, 0), n)))
 
+    # D3.2 자기 진영 경찰: 내 쪽 절반에 들어온 적 깃발병은 거리와 무관하게 추적
+    if POLICE:
+        for q, cnt in en["F"].items():
+            if brain.d(brain.base, q) >= brain.d(brain.obase, q):
+                continue
+            esc = sum(c2 for q2, c2 in en["W"].items() if brain.d(q, q2) <= 1)
+            mine_b = [(brain.d(q, (bb["x"], bb["y"])), (bb["x"], bb["y"])) for bb in owned]
+            mine_b = [t for t in mine_b if t[0] <= 6]
+            cell = min(mine_b)[1] if mine_b else q
+            demands.append((POLICE_PR + cnt, "police", cell, esc + 1))
+
     demands.sort(key=lambda d: -d[0])
     for dm in demands:
         pr, kind, cell, need = dm[:4]
         if kind == "intercept":
             intercept(cell, need, dm[4])
             continue
-        ok = arrive_need(cell, need, allow_partial=(kind in ("defend", "garrison")))
-        if not ok and kind in ("hunt", "escort", "defend", "defend2", "garrison"):
+        ok = arrive_need(cell, need, allow_partial=(kind in ("defend", "garrison", "police")))
+        if kind == "phunt":
+            continue
+        if not ok and kind == "convoy":
+            approach(cell, need - w_dest.get(cell, 0), radius=CONVOY_R)
+            continue
+        if not ok and kind in ("garrison", "police"):
+            approach(cell, need - w_dest.get(cell, 0), radius=GAR_RADIUS)
+        elif not ok and kind in ("hunt", "escort", "escort2", "defend", "defend2"):
             approach(cell, need - w_dest.get(cell, 0), radius=4 if kind != "hunt" else 5)
 
     # D3.5 포위: 전투병이 압도적이면 적 생산 거점(본진·병원) 주변을 봉쇄
@@ -607,9 +895,18 @@ def _decide(brain, view):
         for b in view.buildings:
             p = (b["x"], b["y"])
             if b["owner"] != me:
-                cands.append((p, value(brain, b, turn) + (1.0 if b["owner"] == op else 0.0)))
+                vv = value(brain, b, turn) + (1.0 if b["owner"] == op else 0.0)
+                if strike and b["owner"] == op and b["type"] == "ENG":
+                    vv *= STRIKE_RALLY
+                cands.append((p, vv))
             elif ereach.get(p, 0) > 0 or any(brain.d(q, p) <= 3 for q in en["F"]):
                 cands.append((p, value(brain, b, turn) * 0.8))
+        if outnumbered:
+            # 열세일 땐 당장 위협이 안 보여도 경제 핵심 건물을 집결 후보에 넣어
+            # 예비 병력이 원정 대신 본진 쪽으로 모이게 한다.
+            for b in owned:
+                if b["type"] in ("HALL", "ENG", "HOSPITAL"):
+                    cands.append(((b["x"], b["y"]), value(brain, b, turn) * 1.2))
         if not cands:
             cands = [(brain.obase, 1.0)]
         best = None
@@ -643,7 +940,8 @@ def _decide(brain, view):
             if w_used[i]:
                 continue
             p = wlist[i]
-            rally = max(cands, key=lambda pv: pv[1] / (brain.d(p, pv[0]) + 3))[0] if RALLY_SPLIT else rally0
+            # 열세일 땐 예비 병력을 여러 목표로 분산시키지 않고 한 곳(대개 본진 경제 건물)으로 모은다.
+            rally = max(cands, key=lambda pv: pv[1] / (brain.d(p, pv[0]) + RALLY_D))[0] if (RALLY_SPLIT and not outnumbered) else rally0
             dcur = brain.d(p, rally)
             if dcur == 0 or dcur >= INF:
                 w_used[i] = True
@@ -657,12 +955,26 @@ def _decide(brain, view):
         t = ereach.get(c, 0)
         return t == 0 or w_dest.get(c, 0) > t
 
+    # 마지막 턴 스포일: 방어 병력(전투병·깃발병)이 전혀 없는 상대 건물은 중립화해서
+    # 상대 점수를 깎는다. 다음 턴이 없어 위험 회피도 무의미하므로 무조건 돌진한다.
+    spoil_targets = []
+    if SPOIL_ON and ENDGAME and turn == TOTAL_TURNS:
+        spoil_targets = [(b["x"], b["y"]) for b in view.buildings
+                          if b["owner"] == op
+                          and en["W"].get((b["x"], b["y"]), 0) == 0
+                          and en["F"].get((b["x"], b["y"]), 0) == 0]
+
     f_dest = {}
     new_mem = {}
     for plan in fplans:
         src, dest, tp = plan
-        if ENDGAME and TOTAL_TURNS - turn == 0 and tp is not None and brain.d(src, tp) <= 1:
-            dest = tp  # 마지막 턴: 죽어도 손해 없음, 무조건 진입
+        if ENDGAME and turn == TOTAL_TURNS:
+            near_spoil = [u for u in spoil_targets if brain.d(src, u) <= 1] if SPOIL_ON else []
+            if near_spoil:
+                dest = min(near_spoil, key=lambda u: brain.d(src, u))
+            elif tp is not None and brain.d(src, tp) <= 1:
+                dest = tp  # 기존 목표가 가까우면 그쪽으로 무조건 진입
+            plan[1] = dest
         elif not safe_final(dest):
             cand = [src] + [n for _, n in brain.nbrs[src]]
             safe = [c for c in cand if safe_final(c)]
