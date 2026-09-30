@@ -44,8 +44,8 @@ _BRAINS = {}
 SIEGE = True
 AMBUSH = True
 RALLY_SPLIT = True
-SIEGE_MULT = 2
-SIEGE_ADD = 13
+SIEGE_MULT = 1
+SIEGE_ADD = 11
 def log(*a):
     print(*a, file=sys.stderr)
 
