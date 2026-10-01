@@ -701,7 +701,7 @@ def _decide(brain, view):
         tl = TOTAL_TURNS - turn
         if ENDGAME and tl < 12:
             # 남은 턴 안에 점령(또는 중립화)이 끝날 수 없는 목표는 무의미
-            if dd + (1 if b["owner"] == op else 0) > tl + 1 and not (b["owner"] == op and dd <= tl):
+            if dd + (1 if b["owner"] == op else 0) > tl + 1 and not (b["owner"] == op and dd <= tl + 1):
                 return -1
         if b["type"] == "ENG" and brain.d(brain.base, tp) < brain.d(brain.obase, tp) and b["owner"] != me:
             v *= RETAKE_MULT  # 우리 진영 공학관 탈환 최우선
@@ -1263,7 +1263,7 @@ def _decide(brain, view):
                 else:
                     dest = min(safe, key=lambda c: (c in bmap, c != src))
             else:
-                dest = min(cand, key=lambda c: (ereach.get(c, 0) - w_dest.get(c, 0), c != src))
+                dest = min(cand, key=lambda c: (threat(c) - w_dest.get(c, 0), c != src))
             plan[1] = dest
         add_move(src, "F", dest)
         f_dest[dest] = f_dest.get(dest, 0) + 1
