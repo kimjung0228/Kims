@@ -1,0 +1,16 @@
+{
+  "candidate": "coupled_match",
+  "source_sha256": "d2518d088bfec44097b39c16aa6e63c4cd397fb94e71dd945fea0f52bd4cd7ee",
+  "archive_sha256": "2e33600b45f9360370c80159283a5ce644e77d2811b09a0006b267bea22a1072",
+  "files": {
+    "main.py": "d101fb0960b7ec695e11b12c98fc0eedc44eb7380daa3e175cfca490b0a986a6",
+    "strategy_common.py": "b7150c19aaecfb88eaab0467e6b14577604d0196229d9b27c77066e4d9b82fcc",
+    "protocol.py": "67a5d27ced038de39d7cd3b069bf01786bf4cc9e6c1d39269d1f7e67b185c194",
+    "campus_bot.py": "2568119d19d9def58dd824b06eac332f018f23c0dee24ba1ccddf3169a151e7b",
+    "_generated.py": "8cf113fe574425e1f761911e59fe43394aad147946b07ed4a837e1da6b25fcfc",
+    "submission.json": "ff5431b97ab8dc3d045d053fe1e3148eca20bfe900ec66cd9e7f7f5e542f3de5",
+    "coupled.py": "eae0c2b7980223cc2083737e70fdf6584afcdd9edd9732dac1f51bf55c0844f5"
+  },
+  "official_upload": false,
+  "zip_matches_source": true
+}

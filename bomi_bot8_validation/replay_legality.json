@@ -1,0 +1,240 @@
+{
+  "passed": true,
+  "ast_equivalent_to_evaluated_policy": true,
+  "total_turns": 7349,
+  "records": [
+    {
+      "file": "replay5/replay-10.json",
+      "turns": 28
+    },
+    {
+      "file": "replay5/replay-11.json",
+      "turns": 102
+    },
+    {
+      "file": "replay5/replay-12.json",
+      "turns": 142
+    },
+    {
+      "file": "replay5/replay-2.json",
+      "turns": 63
+    },
+    {
+      "file": "replay5/replay-3.json",
+      "turns": 160
+    },
+    {
+      "file": "replay5/replay-4.json",
+      "turns": 52
+    },
+    {
+      "file": "replay5/replay-5.json",
+      "turns": 81
+    },
+    {
+      "file": "replay5/replay-6.json",
+      "turns": 160
+    },
+    {
+      "file": "replay5/replay-7.json",
+      "turns": 88
+    },
+    {
+      "file": "replay5/replay-8.json",
+      "turns": 128
+    },
+    {
+      "file": "replay5/replay-9.json",
+      "turns": 160
+    },
+    {
+      "file": "replay5/replay.json",
+      "turns": 79
+    },
+    {
+      "file": "replay6/replay (1).json",
+      "turns": 94
+    },
+    {
+      "file": "replay6/replay (10).json",
+      "turns": 70
+    },
+    {
+      "file": "replay6/replay (11).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (12).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (13).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (14).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (15).json",
+      "turns": 71
+    },
+    {
+      "file": "replay6/replay (16).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (17).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (18).json",
+      "turns": 146
+    },
+    {
+      "file": "replay6/replay (19).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (2).json",
+      "turns": 58
+    },
+    {
+      "file": "replay6/replay (20).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (21).json",
+      "turns": 74
+    },
+    {
+      "file": "replay6/replay (3).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (4).json",
+      "turns": 116
+    },
+    {
+      "file": "replay6/replay (5).json",
+      "turns": 64
+    },
+    {
+      "file": "replay6/replay (6).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (7).json",
+      "turns": 160
+    },
+    {
+      "file": "replay6/replay (8).json",
+      "turns": 124
+    },
+    {
+      "file": "replay6/replay (9).json",
+      "turns": 91
+    },
+    {
+      "file": "replay6/replay.json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (1).json",
+      "turns": 153
+    },
+    {
+      "file": "replay7/replay (10).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (11).json",
+      "turns": 99
+    },
+    {
+      "file": "replay7/replay (12).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (13).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (14).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (15).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (16).json",
+      "turns": 136
+    },
+    {
+      "file": "replay7/replay (17).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (18).json",
+      "turns": 48
+    },
+    {
+      "file": "replay7/replay (19).json",
+      "turns": 140
+    },
+    {
+      "file": "replay7/replay (2).json",
+      "turns": 155
+    },
+    {
+      "file": "replay7/replay (20).json",
+      "turns": 28
+    },
+    {
+      "file": "replay7/replay (21).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (23).json",
+      "turns": 101
+    },
+    {
+      "file": "replay7/replay (24).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (3).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (4).json",
+      "turns": 86
+    },
+    {
+      "file": "replay7/replay (5).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (6).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (7).json",
+      "turns": 107
+    },
+    {
+      "file": "replay7/replay (8).json",
+      "turns": 160
+    },
+    {
+      "file": "replay7/replay (9).json",
+      "turns": 145
+    },
+    {
+      "file": "replay7/replay.json",
+      "turns": 160
+    }
+  ],
+  "scope": "Command legality on recorded states only, not counterfactual match results."
+}

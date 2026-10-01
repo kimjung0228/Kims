@@ -1,0 +1,42 @@
+{
+  "candidate": "variant_retarget_guard_fast",
+  "submission": "bomi_bot9_candidate.zip",
+  "baseline": "bomi8",
+  "recommended_submission": "bomi_bot8_submission.zip",
+  "observed_delta": -0.01388888888888895,
+  "bootstrap_95": [
+    -0.08333333333333333,
+    0.05555555555555555
+  ],
+  "remaining_regression_opponents": [
+    "bomi4",
+    "bomi5",
+    "my4",
+    "net"
+  ],
+  "first_full_revision_rejected": true,
+  "first_final_games": 288,
+  "second_final_games": 72,
+  "final_scope_reduced_at_user_request": true,
+  "all_declared_reduced_checks_complete": true,
+  "official_upload": false,
+  "official_win_rate_verified": false,
+  "guaranteed_10pp_increase": false,
+  "source_manifest": {
+    "candidate": "variant_retarget_guard_fast",
+    "source_sha256": "fa75e07123f1d6d4e9fb33df43133304ccd91c0bda53fead1e2409d5065484e1",
+    "archive_sha256": "ad376ff788b9a5a7e9baeee4ba5cb3cefff05ede2100ef2760f9153e866aafd5",
+    "files": {
+      "main.py": "11518ed7306316931884dfc21ea0f165478dfafd57b8840a17b64bd63f4eebcf",
+      "strategy_common.py": "b7150c19aaecfb88eaab0467e6b14577604d0196229d9b27c77066e4d9b82fcc",
+      "protocol.py": "67a5d27ced038de39d7cd3b069bf01786bf4cc9e6c1d39269d1f7e67b185c194",
+      "campus_bot.py": "2568119d19d9def58dd824b06eac332f018f23c0dee24ba1ccddf3169a151e7b",
+      "_generated.py": "8cf113fe574425e1f761911e59fe43394aad147946b07ed4a837e1da6b25fcfc",
+      "submission.json": "ff5431b97ab8dc3d045d053fe1e3148eca20bfe900ec66cd9e7f7f5e542f3de5",
+      "joint_retarget_guard_fast.py": "ec5b7a43440e292ad2306f7fc93b423e7fbe37e0b0f2c3974c1e82ff2cdca24e"
+    },
+    "official_upload": false,
+    "zip_matches_source": true,
+    "archive_path": "bomi_bot9_candidate.zip"
+  }
+}

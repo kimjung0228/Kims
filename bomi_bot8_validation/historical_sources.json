@@ -1,0 +1,48 @@
+{
+  "bomi3": {
+    "directory": "bomi_bot3",
+    "files": {
+      "campus_bot.py": "2568119d19d9def58dd824b06eac332f018f23c0dee24ba1ccddf3169a151e7b",
+      "main.py": "bcc2ae4536742b4bca45d9370217949102471566267c376d72e2ead5af58b95b",
+      "protocol.py": "67a5d27ced038de39d7cd3b069bf01786bf4cc9e6c1d39269d1f7e67b185c194",
+      "strategy_common.py": "5ee1d4de0bffa6f0b01454e2d4119b32325d635d979048f158dcf27868dba422",
+      "submission.json": "ff5431b97ab8dc3d045d053fe1e3148eca20bfe900ec66cd9e7f7f5e542f3de5",
+      "_generated.py": "8cf113fe574425e1f761911e59fe43394aad147946b07ed4a837e1da6b25fcfc"
+    }
+  },
+  "bomi4": {
+    "directory": "bomi_bot4_candidate",
+    "files": {
+      "campus_bot.py": "2568119d19d9def58dd824b06eac332f018f23c0dee24ba1ccddf3169a151e7b",
+      "main.py": "d0339202d19a2a2725fbb826e5476bcd9659b1a77d6b903c344f56b6fa4d6953",
+      "protocol.py": "67a5d27ced038de39d7cd3b069bf01786bf4cc9e6c1d39269d1f7e67b185c194",
+      "strategy_common.py": "5ee1d4de0bffa6f0b01454e2d4119b32325d635d979048f158dcf27868dba422",
+      "submission.json": "ff5431b97ab8dc3d045d053fe1e3148eca20bfe900ec66cd9e7f7f5e542f3de5",
+      "_generated.py": "8cf113fe574425e1f761911e59fe43394aad147946b07ed4a837e1da6b25fcfc"
+    }
+  },
+  "bomi5": {
+    "directory": "bomi_bot5",
+    "files": {
+      "campus_bot.py": "2568119d19d9def58dd824b06eac332f018f23c0dee24ba1ccddf3169a151e7b",
+      "main.py": "99a6bdcad97c01eb45476ea1c33af8170849d3d6e754246f09dd5605c9149bcd",
+      "protocol.py": "67a5d27ced038de39d7cd3b069bf01786bf4cc9e6c1d39269d1f7e67b185c194",
+      "strategy_common.py": "b7150c19aaecfb88eaab0467e6b14577604d0196229d9b27c77066e4d9b82fcc",
+      "submission.json": "ff5431b97ab8dc3d045d053fe1e3148eca20bfe900ec66cd9e7f7f5e542f3de5",
+      "_generated.py": "8cf113fe574425e1f761911e59fe43394aad147946b07ed4a837e1da6b25fcfc"
+    }
+  },
+  "bomi8": {
+    "directory": "bomi_bot8",
+    "files": {
+      "campus_bot.py": "2568119d19d9def58dd824b06eac332f018f23c0dee24ba1ccddf3169a151e7b",
+      "coupled.py": "eae0c2b7980223cc2083737e70fdf6584afcdd9edd9732dac1f51bf55c0844f5",
+      "main.py": "d101fb0960b7ec695e11b12c98fc0eedc44eb7380daa3e175cfca490b0a986a6",
+      "protocol.py": "67a5d27ced038de39d7cd3b069bf01786bf4cc9e6c1d39269d1f7e67b185c194",
+      "strategy_common.py": "b7150c19aaecfb88eaab0467e6b14577604d0196229d9b27c77066e4d9b82fcc",
+      "submission.json": "ff5431b97ab8dc3d045d053fe1e3148eca20bfe900ec66cd9e7f7f5e542f3de5",
+      "_generated.py": "8cf113fe574425e1f761911e59fe43394aad147946b07ed4a837e1da6b25fcfc"
+    }
+  },
+  "bomi3_archive_normalized_source_matches": true
+}

@@ -1,0 +1,232 @@
+{
+  "bomi7": {
+    "games": 384,
+    "wins": 218,
+    "draws": 0,
+    "losses": 166,
+    "points_rate": 0.5677083333333334,
+    "win_rate": 0.5677083333333334,
+    "opponent_adjusted": null,
+    "errors": 0,
+    "max_regular_ms": 99.0840720005508,
+    "by_opponent": {
+      "bomi3": {
+        "games": 64,
+        "wins": 36,
+        "draws": 0,
+        "losses": 28,
+        "points_rate": 0.5625,
+        "win_rate": 0.5625,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 61.88047100113181
+      },
+      "bomi4": {
+        "games": 64,
+        "wins": 41,
+        "draws": 0,
+        "losses": 23,
+        "points_rate": 0.640625,
+        "win_rate": 0.640625,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 64.22064500111446
+      },
+      "bomi5": {
+        "games": 64,
+        "wins": 34,
+        "draws": 0,
+        "losses": 30,
+        "points_rate": 0.53125,
+        "win_rate": 0.53125,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 87.91704100076458
+      },
+      "bomi7": {
+        "games": 64,
+        "wins": 32,
+        "draws": 0,
+        "losses": 32,
+        "points_rate": 0.5,
+        "win_rate": 0.5,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 99.0840720005508
+      },
+      "my4": {
+        "games": 64,
+        "wins": 36,
+        "draws": 0,
+        "losses": 28,
+        "points_rate": 0.5625,
+        "win_rate": 0.5625,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 78.53810199958389
+      },
+      "my5": {
+        "games": 64,
+        "wins": 39,
+        "draws": 0,
+        "losses": 25,
+        "points_rate": 0.609375,
+        "win_rate": 0.609375,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 57.29501899986644
+      }
+    },
+    "by_side": {
+      "Y": {
+        "games": 192,
+        "wins": 106,
+        "draws": 0,
+        "losses": 86,
+        "points_rate": 0.5520833333333334,
+        "win_rate": 0.5520833333333334,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 93.03412400004163
+      },
+      "K": {
+        "games": 192,
+        "wins": 112,
+        "draws": 0,
+        "losses": 80,
+        "points_rate": 0.5833333333333334,
+        "win_rate": 0.5833333333333334,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 99.0840720005508
+      }
+    },
+    "code_hashes": [
+      "d82647754e612ef7aa9f3b48dca14062604bbff658cb6f78ee231ddbbefbd9a9"
+    ]
+  },
+  "coupled_match": {
+    "games": 384,
+    "wins": 305,
+    "draws": 0,
+    "losses": 79,
+    "points_rate": 0.7942708333333334,
+    "win_rate": 0.7942708333333334,
+    "opponent_adjusted": null,
+    "errors": 0,
+    "max_regular_ms": 167.96915300074033,
+    "by_opponent": {
+      "bomi3": {
+        "games": 64,
+        "wins": 57,
+        "draws": 0,
+        "losses": 7,
+        "points_rate": 0.890625,
+        "win_rate": 0.890625,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 167.96915300074033
+      },
+      "bomi4": {
+        "games": 64,
+        "wins": 55,
+        "draws": 0,
+        "losses": 9,
+        "points_rate": 0.859375,
+        "win_rate": 0.859375,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 162.17083300034574
+      },
+      "bomi5": {
+        "games": 64,
+        "wins": 46,
+        "draws": 0,
+        "losses": 18,
+        "points_rate": 0.71875,
+        "win_rate": 0.71875,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 111.90283499854559
+      },
+      "bomi7": {
+        "games": 64,
+        "wins": 43,
+        "draws": 0,
+        "losses": 21,
+        "points_rate": 0.671875,
+        "win_rate": 0.671875,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 76.69392400021025
+      },
+      "my4": {
+        "games": 64,
+        "wins": 52,
+        "draws": 0,
+        "losses": 12,
+        "points_rate": 0.8125,
+        "win_rate": 0.8125,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 72.23359499948856
+      },
+      "my5": {
+        "games": 64,
+        "wins": 52,
+        "draws": 0,
+        "losses": 12,
+        "points_rate": 0.8125,
+        "win_rate": 0.8125,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 45.21718499927374
+      }
+    },
+    "by_side": {
+      "Y": {
+        "games": 192,
+        "wins": 149,
+        "draws": 0,
+        "losses": 43,
+        "points_rate": 0.7760416666666666,
+        "win_rate": 0.7760416666666666,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 167.96915300074033
+      },
+      "K": {
+        "games": 192,
+        "wins": 156,
+        "draws": 0,
+        "losses": 36,
+        "points_rate": 0.8125,
+        "win_rate": 0.8125,
+        "opponent_adjusted": null,
+        "errors": 0,
+        "max_regular_ms": 143.4673509993445
+      }
+    },
+    "code_hashes": [
+      "d2518d088bfec44097b39c16aa6e63c4cd397fb94e71dd945fea0f52bd4cd7ee"
+    ],
+    "paired_vs_baseline": {
+      "map_clusters": 32,
+      "points_delta": 0.2265625,
+      "bootstrap_95": [
+        0.1484375,
+        0.3020833333333333
+      ],
+      "transitions": {
+        "W->W": 180,
+        "W->L": 38,
+        "L->W": 125,
+        "L->L": 41
+      }
+    }
+  },
+  "ranking": [
+    "coupled_match",
+    "bomi7"
+  ]
+}
