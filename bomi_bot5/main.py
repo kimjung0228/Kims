@@ -908,7 +908,7 @@ def _decide(brain, view):
     demands = []  # (priority, kind, cell, need)
     # D1 호위: 깃발병 도착 칸에 적 전투병이 올 수 있으면
     for c, cnt in f_dest.items():
-        t = ereach.get(c, 0)
+        t = threat(c)
         if t > 0:
             b = bmap.get(c)
             pr = 10 + (value(brain, b, turn) if b else 0) + cnt
@@ -1075,7 +1075,7 @@ def _decide(brain, view):
             continue
         defend_kind = kind in ("defend", "defend2", "garrison", "police")
         partial = defend_kind
-        if CONTROL_FIX and ereach.get(cell, 0) >= my_cover(cell):
+        if CONTROL_FIX and threat(cell) >= my_cover(cell):
             partial = False
         ok = arrive_need(cell, need, allow_partial=partial)
         if kind == "phunt":
@@ -1241,7 +1241,7 @@ def _decide(brain, view):
 
     # ------------------------------------------------ 깃발병 안전 재검토 (전투병 배치 확정 후)
     def safe_final(c):
-        t = ereach.get(c, 0)
+        t = threat(c)
         return t == 0 or w_dest.get(c, 0) > t
 
     if ENDGAME and turn == TOTAL_TURNS:
