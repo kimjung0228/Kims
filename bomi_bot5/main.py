@@ -144,6 +144,7 @@ IMPATIENT_FIX = False
 IMPATIENT_TURNS = 2
 IMPATIENT_RISK = 1
 SAFE_THREAT_FIX = True
+FINAL_FLAGS_FIX = True
 RALLY_FIX = False
 DETOUR_FIX = False
 FGEN_FIX = False
@@ -1248,7 +1249,7 @@ def _decide(brain, view):
         spent = sum(cnt * (FC if kind == "F" else wc) for kind, cnt, _ in spawned)
         funds = min(CFG["resource"]["resource_cap"], view.my_resource - spent + income)
         final_flags(brain, view, fplans, bmap, en, ereach_raw if SAFE_THREAT_FIX else ereach,
-                    w_dest, cap_cost, funds)
+                    w_dest, cap_cost, funds, fix=FINAL_FLAGS_FIX)
 
     f_dest = {}
     new_mem = {}
